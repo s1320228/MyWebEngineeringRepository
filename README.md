@@ -36,3 +36,7 @@ This repository contains the project for the Web Engineering course.
 ## Version Control
 
 This project uses Git and GitHub for version control.
+
+# MyWebEngineeringRepository
+This repository is only for WebEngineering class.
+
