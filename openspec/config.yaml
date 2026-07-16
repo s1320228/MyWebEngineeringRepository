@@ -1,0 +1,33 @@
+schema: spec-driven
+
+context: |
+  Tech stack: Python 3.12+, Django 5.0, Django REST Framework, uv (package manager)
+  Tooling: Ruff (linter/formatter), Black, Pytest + pytest-cov, pytest-django
+  Domain: Web Engineering course project (TBD)
+  Conventions:
+    - Follow Django project layout (one app per domain concern)
+    - Keep views thin; put business logic in services or model methods
+    - Use DRF serializers for all API input/output validation
+    - Prefer class-based views and ViewSets over function-based views
+    - Write tests alongside features (models, views, serializers)
+    - Use select_related / prefetch_related to avoid N+1 queries
+    - Environment variables for all secrets (never hardcode)
+    - Small, focused git commits with clear messages
+
+rules:
+  proposal:
+    - Keep proposals under 500 words
+    - Always include a "Non-goals" section
+    - Identify which Django apps are affected
+  design:
+    - Include model relationship diagrams (ASCII or described)
+    - List all API endpoints with HTTP methods and permissions
+    - Specify database indexes needed
+  tasks:
+    - Break tasks into chunks of max 2 hours
+    - Each task should be independently testable
+    - Include migration tasks when models change
+    - Include a test-writing task for each feature task
+  specs:
+    - Write requirements as SHALL statements
+    - Include at least one happy-path and one error scenario per requirement

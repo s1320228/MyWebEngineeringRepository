@@ -1,0 +1,10 @@
+{
+  "formatter": {
+    "python": "ruff"
+  },
+  "permission": {
+    "skill": {
+      "*": "allow"
+    }
+  }
+}
