@@ -1,7 +1,5 @@
 {
-  "formatter": {
-    "python": "ruff"
-  },
+  "$schema": "https://opencode.ai/config.json",
   "permission": {
     "skill": {
       "*": "allow"
