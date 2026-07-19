@@ -24,7 +24,8 @@ MyWebEngineeringProject/
 │   └── wsgi.py          # WSGI configuration
 ├── core/                # Core application
 │   ├── models.py        # Database models
-│   ├── views.py         # View logic
+│   ├── views.py         # View functions
+│   ├── urls.py          # Application URL routing
 │   └── tests/           # Unit tests
 ├── manage.py            # Django management script
 └── pyproject.toml       # Project dependencies
@@ -126,3 +127,110 @@ uv run ruff format .
 ## Version Control
 
 This project uses Git and GitHub for version control.
+
+## API Documentation
+
+This section describes the callable URLs, view functions, arguments, and return values of the application.
+
+---
+
+### Home page
+
+**URL**
+
+/
+
+**View Function**
+
+core.views.home(request)
+
+**Arguments**
+
+- request: Django HttpRequest object
+
+**Return**
+
+- HttpResponse containing "Home Page"
+
+
+---
+
+### Item List
+
+**URL**
+
+/objects/
+
+**View Function**
+
+core.views.object_list(request)
+
+**Arguments**
+
+- request: Django HttpRequest object
+
+**Return**
+
+- HttpResponse containing "Object List"
+
+
+---
+
+### Create Form Page
+
+**URL**
+
+/form/
+
+**View Function**
+
+core.views.form_page(request)
+
+**Arguments**
+
+- request: Django HttpRequest object
+
+**Return**
+
+- HttpResponse containing "Form Page"
+
+
+---
+
+### Process Item Request
+
+**URL**
+
+/process/
+
+**View Function**
+
+core.views.process_request(request)
+
+**Arguments**
+
+- request: Django HttpRequest object
+
+**Return**
+
+- HttpResponse containing "Processed"
+
+---
+
+### Redirect
+
+**URL**
+
+/redirect/
+
+**View Function**
+
+core.views.go_home(request)
+
+**Arguments**
+
+- request: Django HttpRequest object
+
+**Return**
+
+- HttpRedirect response to the home page
