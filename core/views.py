@@ -1,8 +1,10 @@
 # Create your views here.
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from .forms import ReservationForm
-
+from .forms import ReservationForm, RegisterForm
+from .models import Instructor
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     return render(request, "home.html")
@@ -19,6 +21,7 @@ def form_page(request):
 def process_request(request):
     return HttpResponse("Processed")
 
+@login_required
 def reservation(request) :
     if request.method == "POST" :
         form = ReservationForm(request.POST)
@@ -34,9 +37,24 @@ def reservation(request) :
 def login_view(request) :
     return render(request, "login.html")
 
-def register(request) :
-    return render(request, "register.html")
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
 
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+
+            return redirect("home")
+
+    else:
+        form = RegisterForm()
+
+    return render(
+        request,
+        "register.html",
+        {"form": form},
+    )
 
 def go_home(request):
     return redirect("/")
@@ -62,4 +80,13 @@ def available_dates(request):
         request,
         "available_dates.html",
         {"dates": dates},
+    )
+
+def instructor_list(request) :
+    instructors = Instructor.objects.all()
+
+    return render(
+        request,
+        "instructor_list.html",
+        {"instructors":instructors},
     )
