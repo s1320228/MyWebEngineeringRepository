@@ -1,11 +1,169 @@
+/* ====== General ====== */
+
 body{
-    font-family: Arial, Helvetica, sans-serif;
+    min-height:100vh;
+    background:linear-gradient(
+        135deg,
+        #000000,
+        #151515,
+        #2a2a2a
+    );
+    color:#f5f5f5;
+    font-family:Arial, Helvetica, sans-serif;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+    color:#d4af37;
+}
+
+/* ====== Navbar ====== */
+
+.navbar{
+    background-color:#000000 !important;
+    border-bottom:3px solid #d4af37;
+}
+
+.navbar-brand{
+    color:#d4af37 !important;
+    font-weight:bold;
+    font-size:1.6rem;
+}
+
+.navbar .nav-link{
+    color:#d4af37 !important;
+    background-color:transparent !important;
+    border:none;
+    text-decoration:none;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus{
+    color:#f4d76e !important;
+    background-color:transparent !important;
+}
+
+.navbar .navbar-text{
+    color:#d4af37 !important;
+}
+
+.navbar .btn-link{
+    background-color:transparent !important;
+    border:none;
+    box-shadow:none;
+    padding-left:0;
+    padding-right:0;
+}
+
+.navbar .btn-link:hover,
+.navbar .btn-link:focus{
+    color:#f4d76e !important;
+    background-color:transparent !important;
+}
+/* ====== Cards ====== */
+
 .card{
+    background-color:#1d1d1d;
+    color:#ffffff;
+    border:1px solid #d4af37;
     border-radius:12px;
 }
 
+.card-title{
+    color:#d4af37;
+}
+
+/* ====== Buttons ====== */
+
+.btn-primary,
+.btn-success{
+    background-color:#d4af37;
+    border:1px solid #d4af37;
+    color:#000000;
+    font-weight:bold;
+}
+
+.btn-primary:hover,
+.btn-success:hover{
+    background-color:#b68c1c;
+    border-color:#b68c1c;
+    color:#ffffff;
+}
+
+.navbar .logout-btn{
+    color:#dc3545 !important;
+}
+
+.navbar .logout-btn:hover{
+    color:#ff6b6b !important;
+}
+
+/* ====== Forms ====== */
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:10px;
+    background-color:#222222;
+    color:#ffffff;
+    border:1px solid #d4af37;
+    border-radius:6px;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    outline:none;
+    border-color:#f4d76e;
+    box-shadow:0 0 8px rgba(212, 175, 55, 0.6);
+    background-color:#222222;
+    color:#ffffff;
+}
+
+select option{
+    background-color:#222222;
+    color:#ffffff;
+}
+
+/* ====== Links ====== */
+
+a{
+    color:#d4af37;
+}
+
+a:hover{
+    color:#f4d76e;
+}
+
+/* ====== Alerts ====== */
+
+.alert-success{
+    background-color:#222222;
+    border:1px solid #d4af37;
+    color:#d4af37;
+}
+
+/* ====== Footer ====== */
+
 footer{
-    font-size:14px;
+    color:#d4af37;
+}
+
+
+button.logout-btn,
+.navbar button.logout-btn,
+.navbar .nav-link.logout-btn{
+    color:#dc3545 !important;
+}
+
+button.logout-btn:hover,
+button.logout-btn:focus,
+.navbar .nav-link.logout-btn:hover,
+.navbar .nav-link.logout-btn:focus{
+    color:#ff6b6b !important;
 }

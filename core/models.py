@@ -46,10 +46,16 @@ class Item(models.Model):
         """Return the human-readable string representation of the item."""
         return self.name
 
-class Instructor(models.Model) :
+class Instructor(models.Model):
     name = models.CharField(max_length=100)
 
-    def __str__(self) :
+    photo = models.ImageField(
+        upload_to="instructors/",
+        blank=True,
+        null=True,
+    )
+
+    def __str__(self):
         return self.name
 
 class Reservation(models.Model):
