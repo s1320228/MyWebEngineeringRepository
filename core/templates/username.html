@@ -1,0 +1,6 @@
+<!-- username.html -->
+<form action="process_user" method="post">
+{% csrf_token %} <!-- needed for POST -->
+{{ user_form }}
+<input type="submit" value="Submit" />
+</form>

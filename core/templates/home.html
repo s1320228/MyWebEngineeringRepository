@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Welcome</h2>
+
+<p>
+Welcome to the Dancing School Reservation System.
+</p>
+
+<p>
+Reserve your lesson with one of our instructors.
+</p>
+
+<a href="{% url 'reservation' %}" class="btn btn-primary">
+    Make a Reservation
+</a>
+
+{% endblock %}

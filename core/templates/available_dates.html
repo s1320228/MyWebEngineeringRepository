@@ -1,0 +1,15 @@
+<h5>Available Dates</h5>
+
+<ul>
+
+{% for date in dates %}
+
+<li>{{ date }}</li>
+
+{% empty %}
+
+<li>No available dates.</li>
+
+{% endfor %}
+
+</ul>

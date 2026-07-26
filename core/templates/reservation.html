@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Reservation</h2>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <p>
+        {{ form.instructor.label_tag }}
+        {{ form.instructor }}
+    </p>
+
+    <div id="available">
+        <p>Select an instructor to see available dates.</p>
+    </div>
+
+    <p>
+        {{ form.customer_name.label_tag }}
+        {{ form.customer_name }}
+    </p>
+
+    <p>
+        {{ form.reservation_date.label_tag }}
+        {{ form.reservation_date }}
+    </p>
+
+    <button type="submit" class="btn btn-success">
+        Reserve
+    </button>
+
+</form>
+
+{% endblock %}

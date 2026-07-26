@@ -45,3 +45,18 @@ class Item(models.Model):
     def __str__(self):
         """Return the human-readable string representation of the item."""
         return self.name
+
+class Instructor(models.Model) :
+    name = models.CharField(max_length=100)
+
+    def __str__(self) :
+        return self.name
+
+class Reservation(models.Model):
+    instructor = models.ForeignKey(Instructor, on_delete=models.CASCADE)
+    customer_name = models.CharField(max_length=100)
+    reservation_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.customer_name} - {self.instructor.name}"
