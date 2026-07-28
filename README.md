@@ -85,10 +85,17 @@ MyWebEngineeringProject/
 │   ├── models.py
 │   ├── urls.py
 │   └── views.py
-├── media/
+│
+static/
+├── images/
 │   └── instructors/
-├── static/
-│   └── style.css
+│       ├── Alice.png
+│       ├── Bob.png
+│       ├── Charlie.png
+│       ├── David.png
+│       ├── Emma.png
+│       └── Kenta.png
+└── style.css
 ├── templates/
 │   ├── base.html
 │   ├── home.html
