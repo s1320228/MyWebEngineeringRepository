@@ -234,7 +234,7 @@ uv run python manage.py migrate
 ### 4. Create an administrator account
 
 ```bash
-uv run python manage.py createsuperuser
+uv run python manage.py createsuperuser (Optional for local development)
 ```
 
 ### 5. Run the development server
@@ -533,12 +533,101 @@ The production deployment uses:
 - A secret key stored in Render environment variables
 - `DEBUG=False`
 - HTTPS
-- Restricted allowed hosts
+- Configured ALLOWED_HOSTS
 - Secure session cookies
 - Secure CSRF cookies
 - PostgreSQL as the production database
 
 ---
+
+## Deployment
+
+The application is deployed on Render.
+
+Live application:
+
+https://royal-dance-school.onrender.com/
+
+### Hosting Platform
+
+The production application is hosted on:
+
+- Render Web Service
+- Render PostgreSQL
+
+### Application Server
+
+Gunicorn is used as the production WSGI application server.
+
+Start command:
+
+```bash
+uv run gunicorn config.wsgi:application
+```
+
+### Build Command
+
+Render automatically installs dependencies, collects static files and applies database migrations during deployment.
+
+```bash
+uv sync --locked && uv run python manage.py collectstatic --noinput && uv run python manage.py migrate
+```
+
+### Environment Variables
+
+The following environment variables are configured in the Render Web Service:
+
+- `SECRET_KEY`
+- `DATABASE_URL`
+- `DEBUG=False`
+- `ALLOWED_HOSTS`
+
+The production secret key is securely stored in Render and is not included in the GitHub repository.
+
+### Database
+
+The project uses:
+
+- SQLite for local development
+- Render PostgreSQL for production
+
+The production database connection is configured through the `DATABASE_URL` environment variable using `dj-database-url`.
+
+### Static Files
+
+Static files are stored in the `static/` directory.
+
+During deployment, Django collects static files using:
+
+```bash
+python manage.py collectstatic
+```
+
+WhiteNoise serves CSS, JavaScript and instructor images in the production environment.
+
+Instructor images are stored in:
+
+```text
+static/images/instructors/
+```
+
+### Uploaded Files
+
+The current application does not support user-uploaded files.
+
+Instructor profile images are included as static assets and are deployed together with the application.
+
+### Deployment Process
+
+1. Push the latest code to the GitHub repository.
+2. Render automatically detects changes to the connected branch.
+3. Dependencies are installed using `uv`.
+4. Static files are collected using `collectstatic`.
+5. Database migrations are applied.
+6. Gunicorn starts the Django application.
+7. The application becomes available at:
+
+https://royal-dance-school.onrender.com/
 
 ## Author
 
