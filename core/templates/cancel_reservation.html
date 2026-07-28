@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Cancel Reservation
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="h3">Cancel Reservation</h1>
+
+                <p>
+                    Are you sure you want to cancel your reservation
+                    with
+                    <strong>{{ reservation.instructor.name }}</strong>
+                    on
+                    <strong>{{ reservation.reservation_date }}</strong>?
+                </p>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <button type="submit" class="btn btn-danger">
+                        Yes, cancel reservation
+                    </button>
+
+                    <a
+                        href="{% url 'my_reservations' %}"
+                        class="btn btn-secondary"
+                    >
+                        Keep reservation
+                    </a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

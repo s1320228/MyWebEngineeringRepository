@@ -1,8 +1,10 @@
+from datetime import date
+
 import pytest
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from core.models import Instructor, Reservation
+from core.models import AvailableDate, Instructor, Reservation
 
 
 @pytest.mark.django_db
@@ -33,15 +35,12 @@ def test_reservation_requires_login(client):
 
 @pytest.mark.django_db
 def test_logged_in_user_can_open_reservation_page(client):
-    User.objects.create_user(
+    user = User.objects.create_user(
         username="john",
         password="password123",
     )
 
-    client.login(
-        username="john",
-        password="password123",
-    )
+    client.force_login(user)
 
     response = client.get(reverse("reservation"))
 
@@ -50,17 +49,16 @@ def test_logged_in_user_can_open_reservation_page(client):
 
 @pytest.mark.django_db
 def test_logged_in_user_can_create_reservation(client):
-    User.objects.create_user(
+    user = User.objects.create_user(
         username="john",
         password="password123",
     )
 
-    instructor = Instructor.objects.create(name="Alice")
-
-    client.login(
-        username="john",
-        password="password123",
+    instructor = Instructor.objects.create(
+        name="Alice",
     )
+
+    client.force_login(user)
 
     response = client.post(
         reverse("reservation"),
@@ -71,7 +69,8 @@ def test_logged_in_user_can_create_reservation(client):
         },
     )
 
-    assert response.status_code == 200
+    assert response.status_code == 302
+    assert response.url == reverse("my_reservations")
     assert Reservation.objects.count() == 1
 
     reservation = Reservation.objects.first()
@@ -79,21 +78,22 @@ def test_logged_in_user_can_create_reservation(client):
     assert reservation is not None
     assert reservation.customer_name == "John"
     assert reservation.instructor == instructor
+    assert reservation.user == user
+    assert reservation.reservation_date == date(2026, 8, 1)
 
 
 @pytest.mark.django_db
 def test_invalid_reservation_is_not_saved(client):
-    User.objects.create_user(
+    user = User.objects.create_user(
         username="john",
         password="password123",
     )
 
-    instructor = Instructor.objects.create(name="Alice")
-
-    client.login(
-        username="john",
-        password="password123",
+    instructor = Instructor.objects.create(
+        name="Alice",
     )
+
+    client.force_login(user)
 
     response = client.post(
         reverse("reservation"),
@@ -109,11 +109,79 @@ def test_invalid_reservation_is_not_saved(client):
 
 
 @pytest.mark.django_db
-def test_available_dates(client):
-    response = client.get(
-        reverse("available_dates"),
-        {"instructor": "1"},
+def test_available_dates_returns_dates_for_selected_instructor(
+    client,
+):
+    instructor = Instructor.objects.create(
+        name="Alice",
     )
 
+    AvailableDate.objects.create(
+        instructor=instructor,
+        date=date(2026, 8, 1),
+    )
+
+    AvailableDate.objects.create(
+        instructor=instructor,
+        date=date(2026, 8, 5),
+    )
+
+    response = client.get(
+        reverse("available_dates"),
+        {"instructor": instructor.id},
+        HTTP_HX_REQUEST="true",
+    )
+
+    content = response.content.decode()
+
     assert response.status_code == 200
-    assert "2026-07-28" in response.content.decode()
+    assert "2026-08-01" in content
+    assert "2026-08-05" in content
+
+
+@pytest.mark.django_db
+def test_available_dates_does_not_return_other_instructor_dates(
+    client,
+):
+    instructor_one = Instructor.objects.create(
+        name="Alice",
+    )
+
+    instructor_two = Instructor.objects.create(
+        name="Bob",
+    )
+
+    AvailableDate.objects.create(
+        instructor=instructor_one,
+        date=date(2026, 8, 1),
+    )
+
+    AvailableDate.objects.create(
+        instructor=instructor_two,
+        date=date(2026, 8, 3),
+    )
+
+    response = client.get(
+        reverse("available_dates"),
+        {"instructor": instructor_one.id},
+        HTTP_HX_REQUEST="true",
+    )
+
+    content = response.content.decode()
+
+    assert response.status_code == 200
+    assert "2026-08-01" in content
+    assert "2026-08-03" not in content
+
+
+@pytest.mark.django_db
+def test_available_dates_handles_missing_instructor(client):
+    response = client.get(
+        reverse("available_dates"),
+        HTTP_HX_REQUEST="true",
+    )
+
+    content = response.content.decode()
+
+    assert response.status_code == 200
+    assert "Select an instructor" in content

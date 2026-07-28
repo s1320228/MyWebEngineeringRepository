@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}
+    My Reservations
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">My Reservations</h1>
+
+    {% if reservations %}
+        <div class="row g-4">
+            {% for reservation in reservations %}
+                <div class="col-12 col-md-6">
+                    <article class="card h-100">
+                        <div class="card-body">
+                            <h2 class="card-title h4">
+                                {{ reservation.instructor.name }}
+                            </h2>
+
+                            <dl>
+                                <dt>Customer</dt>
+                                <dd>{{ reservation.customer_name }}</dd>
+
+                                <dt>Reservation date</dt>
+                                <dd>
+                                    {{ reservation.reservation_date }}
+                                </dd>
+
+                                <dt>Created</dt>
+                                <dd>
+                                    {{ reservation.created_at }}
+                                </dd>
+                            </dl>
+
+                            <a
+                                href="{% url 'edit_reservation' reservation.id %}"
+                                class="btn btn-primary"
+                            >
+                                Edit
+                            </a>
+
+                            <a
+                                href="{% url 'cancel_reservation' reservation.id %}"
+                                class="btn btn-outline-danger"
+                            >
+                                Cancel
+                            </a>
+                        </div>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>You do not have any reservations.</p>
+
+        <a href="{% url 'reservation' %}" class="btn btn-primary">
+            Make a reservation
+        </a>
+    {% endif %}
+</div>
+{% endblock %}

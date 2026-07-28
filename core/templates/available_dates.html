@@ -1,15 +1,21 @@
-<h5>Available Dates</h5>
+<div class="available-dates">
+    <h2 class="available-dates__title">
+        Recent Available Dates
+    </h2>
 
-<ul>
+    {% if message %}
+        <p>{{ message }}</p>
 
-{% for date in dates %}
+    {% elif available_dates %}
+        <ul>
+            {% for available_date in available_dates %}
+                <li>
+                    {{ available_date|date:"Y-m-d" }}
+                </li>
+            {% endfor %}
+        </ul>
 
-<li>{{ date }}</li>
-
-{% empty %}
-
-<li>No available dates.</li>
-
-{% endfor %}
-
-</ul>
+    {% else %}
+        <p>No available dates.</p>
+    {% endif %}
+</div>

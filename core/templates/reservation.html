@@ -2,30 +2,66 @@
 
 {% block content %}
 
-<h2 class="mb-4">Reservation</h2>
+<h1>Make a Reservation</h1>
 
 <form method="post">
 
     {% csrf_token %}
 
-    <p>
-        {{ form.instructor.label_tag }}
-        {{ form.instructor }}
-    </p>
+    <div class="mb-3">
+        <label
+            for="{{ form.instructor.id_for_label }}"
+            class="form-label"
+        >
+            Instructor
+        </label>
 
-    <div id="available">
-        <p>Select an instructor to see available dates.</p>
+        {{ form.instructor }}
+
+        <div
+            id="instructor-help"
+            class="form-text"
+            style="color: white;"
+        >
+            Selecting an instructor will load available dates.
+        </div>
     </div>
 
-    <p>
+    <div
+        id="available"
+        class="mb-3"
+        aria-live="polite"
+        aria-atomic="true"
+    >
+        Select an instructor to view available dates.
+    </div>
+
+    <div
+        id="date-loading"
+        class="htmx-indicator mb-3"
+        role="status"
+        aria-live="polite"
+    >
+        Loading available dates...
+    </div>
+
+    <div class="mb-3">
         {{ form.customer_name.label_tag }}
         {{ form.customer_name }}
-    </p>
 
-    <p>
+        <div
+            id="customer-name-help"
+            class="form-text"
+            style="color: white;"
+        >
+            Enter your name here.
+        </div>
+    </div>
+
+    <div class="mb-3">
         {{ form.reservation_date.label_tag }}
         {{ form.reservation_date }}
-    </p>
+    </div>
 
     <button type="submit" class="btn btn-success">
         Reserve

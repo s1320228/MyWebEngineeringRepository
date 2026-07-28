@@ -2,9 +2,11 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .forms import ReservationForm, RegisterForm
-from .models import Instructor
+from .models import Instructor, Reservation
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+from datetime import date
 
 def home(request):
     return render(request, "home.html")
@@ -22,17 +24,25 @@ def process_request(request):
     return HttpResponse("Processed")
 
 @login_required
-def reservation(request) :
-    if request.method == "POST" :
+def reservation(request):
+    if request.method == "POST":
         form = ReservationForm(request.POST)
 
-        if form.is_valid() :
-            form.save()
-            return render(request, "success.html")
-    else :
-        form = ReservationForm()
+        if form.is_valid():
+            reservation_object = form.save(commit=False)
+            reservation_object.user = request.user
+            reservation_object.save()
+            return redirect("my_reservations")
+    else:
+        form = ReservationForm(
+            initial={"customer_name": request.user.username}
+        )
 
-    return render(request, "reservation.html", {"form":form},)
+    return render(
+        request,
+        "reservation.html",
+        {"form": form},
+    )
 
 def login_view(request) :
     return render(request, "login.html")
@@ -60,28 +70,65 @@ def go_home(request):
     return redirect("/")
 
 def available_dates(request):
-    instructor = request.GET.get("instructor")
+    instructor_id = request.GET.get("instructor")
 
-    dates = []
+    if not instructor_id:
+        return render(
+            request,
+            "available_dates.html",
+            {
+                "available_dates": [],
+                "message": "Select an instructor",
+            },
+        )
 
-    if instructor == "1":
-        dates = [
-            "2026-07-28",
-            "2026-07-29",
-            "2026-07-31",
+    available_dates_by_instructor = {
+        1: [
+            date(2026, 8, 1),
+            date(2026, 8, 5),
+            date(2026, 8, 10),
+        ],
+        2: [
+            date(2026, 8, 3),
+            date(2026, 8, 7),
+            date(2026, 8, 12),
+        ],
+        3: [
+            date(2026, 8, 2),
+            date(2026, 8, 8),
+            date(2026, 8, 15),
+        ],
+        4 : [
+            date(2026, 7, 30),
+            date(2026, 8, 2),
+            date(2026, 8, 5),
+            date(2026, 8, 15)
+        ],
+        5 : [
+            date(2026, 8, 12),
+            date(2026, 8, 14),
+            date(2026, 8, 22),
+        ],
+        6 : [
+            date(2026, 8, 2),
+            date(2026, 8, 16),
+            date(2026, 8, 22),
         ]
-    elif instructor == "2":
-        dates = [
-            "2026-07-30",
-            "2026-08-01",
-        ]
+    }
+
+    dates = available_dates_by_instructor.get(
+        int(instructor_id),
+        [],
+    )
 
     return render(
         request,
         "available_dates.html",
-        {"dates": dates},
+        {
+            "available_dates": dates,
+            "message": "",
+        },
     )
-
 def instructor_list(request) :
     instructors = Instructor.objects.all()
 
@@ -89,4 +136,70 @@ def instructor_list(request) :
         request,
         "instructor_list.html",
         {"instructors":instructors},
+    )
+
+@login_required
+def reservation_success(request):
+    return render(request, "success.html")
+
+@login_required
+def my_reservations(request):
+    reservations = Reservation.objects.filter(
+        user=request.user
+    ).select_related("instructor")
+
+    return render(
+        request,
+        "my_reservations.html",
+        {"reservations": reservations},
+    )
+
+@login_required
+def edit_reservation(request, reservation_id):
+    reservation_object = get_object_or_404(
+        Reservation,
+        id=reservation_id,
+        user=request.user,
+    )
+
+    if request.method == "POST":
+        form = ReservationForm(
+            request.POST,
+            instance=reservation_object,
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect("my_reservations")
+
+    else:
+        form = ReservationForm(
+            instance=reservation_object,
+        )
+
+    return render(
+        request,
+        "edit_reservation.html",
+        {
+            "form": form,
+            "reservation": reservation_object,
+        },
+    )
+
+@login_required
+def cancel_reservation(request, reservation_id):
+    reservation_object = get_object_or_404(
+        Reservation,
+        id=reservation_id,
+        user=request.user,
+    )
+
+    if request.method == "POST":
+        reservation_object.delete()
+        return redirect("my_reservations")
+
+    return render(
+        request,
+        "cancel_reservation.html",
+        {"reservation": reservation_object},
     )

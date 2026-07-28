@@ -167,3 +167,12 @@ button.logout-btn:focus,
 .navbar .nav-link.logout-btn:focus{
     color:#ff6b6b !important;
 }
+
+.htmx-indicator {
+    display: none;
+}
+
+.htmx-request .htmx-indicator,
+.htmx-request.htmx-indicator {
+    display: block;
+}
