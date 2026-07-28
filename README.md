@@ -36,27 +36,22 @@ The interface uses Bootstrap for responsive design and HTMX for asynchronous con
 
 ## Technologies
 
-- Python 3.12+
+- Python
 - Django
-- SQLite for local development
-- HTML5
-- CSS3
-- Bootstrap 5
+- HTML
+- CSS
+- Bootstrap
 - HTMX
-- Pillow
-- uv
-- Ruff
-- Pytest
-- pytest-django
-- Git
-- GitHub
-- OpenCode
-- OpenSpec
-- PostgreSQL for production
+- PostgreSQL
+- SQLite
 - Gunicorn
 - WhiteNoise
+- Pytest
+- Git
+- GitHub
 - Render
-- dj-database-url
+- OpenCode
+- OpenSpec
 
 ---
 
@@ -269,7 +264,7 @@ An instructor can have:
 - A name
 - A profile image
 
-Uploaded images are stored under:
+The application currently uses predefined instructor profile images stored in:
 
 ```text
 static/images/instructors/
