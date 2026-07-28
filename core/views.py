@@ -1,5 +1,4 @@
 # Create your views here.
-from datetime import date
 
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -8,6 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import RegisterForm, ReservationForm
 from .models import Instructor, Reservation
+from .models import AvailableDate
 
 
 def home(request):
@@ -84,53 +84,23 @@ def available_dates(request):
             },
         )
 
-    available_dates_by_instructor = {
-        1: [
-            date(2026, 8, 1),
-            date(2026, 8, 5),
-            date(2026, 8, 10),
-        ],
-        2: [
-            date(2026, 8, 3),
-            date(2026, 8, 7),
-            date(2026, 8, 12),
-        ],
-        3: [
-            date(2026, 8, 2),
-            date(2026, 8, 8),
-            date(2026, 8, 15),
-        ],
-        4 : [
-            date(2026, 7, 30),
-            date(2026, 8, 2),
-            date(2026, 8, 5),
-            date(2026, 8, 15)
-        ],
-        5 : [
-            date(2026, 8, 12),
-            date(2026, 8, 14),
-            date(2026, 8, 22),
-        ],
-        6 : [
-            date(2026, 8, 2),
-            date(2026, 8, 16),
-            date(2026, 8, 22),
-        ]
-    }
-
-    dates = available_dates_by_instructor.get(
-        int(instructor_id),
-        [],
+    available_dates = (
+        AvailableDate.objects.filter(
+            instructor_id=instructor_id,
+        )
+        .order_by("date")
+        .values_list("date", flat=True)
     )
 
     return render(
         request,
         "available_dates.html",
         {
-            "available_dates": dates,
+            "available_dates": available_dates,
             "message": "",
         },
     )
+
 def instructor_list(request) :
     instructors = Instructor.objects.all()
 
