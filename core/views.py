@@ -1,12 +1,14 @@
 # Create your views here.
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
-from .forms import ReservationForm, RegisterForm
-from .models import Instructor, Reservation
+from datetime import date
+
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import get_object_or_404
-from datetime import date
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+
+from .forms import RegisterForm, ReservationForm
+from .models import Instructor, Reservation
+
 
 def home(request):
     return render(request, "home.html")

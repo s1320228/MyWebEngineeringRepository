@@ -1,7 +1,10 @@
-import pytest
 from datetime import date, timedelta
-from core.models import Instructor, Reservation
+
+import pytest
 from django.contrib.auth.models import User
+
+from core.models import Instructor, Reservation
+
 
 @pytest.mark.django_db
 def test_create_reservation():
