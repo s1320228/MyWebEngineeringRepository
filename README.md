@@ -80,17 +80,16 @@ MyWebEngineeringProject/
 │   ├── models.py
 │   ├── urls.py
 │   └── views.py
-│
-static/
-├── images/
-│   └── instructors/
-│       ├── Alice.png
-│       ├── Bob.png
-│       ├── Charlie.png
-│       ├── David.png
-│       ├── Emma.png
-│       └── Kenta.png
-└── style.css
+├── static/
+│   ├── images/
+│   │   └── instructors/
+│   │       ├── Alice.png
+│   │       ├── Bob.png
+│   │       ├── Charlie.png
+│   │       ├── David.png
+│   │       ├── Emma.png
+│   │       └── Kenta.png
+│   └── style.css
 ├── templates/
 │   ├── base.html
 │   ├── home.html
@@ -134,12 +133,23 @@ The `Reservation` model stores dance lesson reservations.
 | `reservation_date` | DateField | Required | Requested lesson date |
 | `created_at` | DateTimeField | Automatically generated | Reservation creation time |
 
+### AvailableDate Model
+
+The `AvailableDate` model stores lesson dates available for each instructor.
+
+| Field | Type | Description |
+|---|---|---|
+| `id` | BigAutoField | Primary key |
+| `instructor` | ForeignKey | Related instructor |
+| `date` | DateField | Available lesson date |
+
 ### Relationships
 
 One instructor can have multiple reservations.
 
 ```text
 Instructor 1 ─────────── * Reservation
+Instructor 1 ─────────── * AvailableDate
 ```
 
 Django's built-in authentication tables are also used to store user accounts, passwords and sessions.
@@ -231,10 +241,10 @@ uv sync
 uv run python manage.py migrate
 ```
 
-### 4. Create an administrator account
+### 4. (Optional) Create an administrator account for local development
 
 ```bash
-uv run python manage.py createsuperuser (Optional for local development)
+uv run python manage.py createsuperuser
 ```
 
 ### 5. Run the development server
