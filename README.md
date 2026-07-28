@@ -38,7 +38,7 @@ The interface uses Bootstrap for responsive design and HTMX for asynchronous con
 
 - Python 3.12+
 - Django
-- SQLite
+- SQLite for local development
 - HTML5
 - CSS3
 - Bootstrap 5
@@ -52,6 +52,11 @@ The interface uses Bootstrap for responsive design and HTMX for asynchronous con
 - GitHub
 - OpenCode
 - OpenSpec
+- PostgreSQL for production
+- Gunicorn
+- WhiteNoise
+- Render
+- dj-database-url
 
 ---
 
@@ -260,7 +265,7 @@ An instructor can have:
 Uploaded images are stored under:
 
 ```text
-media/instructors/
+static/images/instructors/
 ```
 
 ---
