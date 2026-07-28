@@ -338,7 +338,7 @@ Logs out the current user through a POST request.
 /admin/
 ```
 
-Allows administrators to manage users, instructors and reservations.
+Allows administrators to manage users, instructors, available dates and reservations.
 
 ---
 
@@ -526,14 +526,15 @@ The application uses Django security features including:
 - POST-based logout
 - Server-side form validation
 
-Production deployments should use:
+The production deployment uses:
 
-- A secure secret key
+- A secret key stored in Render environment variables
 - `DEBUG=False`
 - HTTPS
-- Appropriate allowed hosts
-- A production database
-- Secure cookie settings
+- Restricted allowed hosts
+- Secure session cookies
+- Secure CSRF cookies
+- PostgreSQL as the production database
 
 ---
 
