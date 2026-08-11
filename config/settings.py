@@ -187,6 +187,13 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
 
+# メールを実際に送らず、コンソール上に表示
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'gmailアカウント名'
+EMAIL_HOST_PASSWORD = 'gmailパスワード'
+EMAIL_USE_TLS = True
+
 if not DEBUG:
     SECURE_PROXY_SSL_HEADER = (
         "HTTP_X_FORWARDED_PROTO",

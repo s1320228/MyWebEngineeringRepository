@@ -27,6 +27,9 @@ def process_request(request):
 
 @login_required
 def reservation(request):
+
+    instructor_id = request.GET.get("instructor")
+
     if request.method == "POST":
         form = ReservationForm(request.POST)
 
@@ -37,7 +40,10 @@ def reservation(request):
             return redirect("my_reservations")
     else:
         form = ReservationForm(
-            initial={"customer_name": request.user.username}
+            initial={
+                "instructor" : instructor_id,
+                "customer_name": request.user.username
+            }
         )
 
     return render(

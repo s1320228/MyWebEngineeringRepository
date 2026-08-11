@@ -4,20 +4,51 @@
 
 <div class="container mt-5">
 
-<h2>Create Account</h2>
+    <h2>Create Account</h2>
 
-<form method="post">
+    <form method="post">
 
-    {% csrf_token %}
+        {% csrf_token %}
 
-    {{ form.as_p }}
+        {{ form.as_p }}
 
-    <button class="btn btn-primary">
-        Register
-    </button>
+        <div class="form-check mb-3">
+            <input
+                class="form-check-input"
+                type="checkbox"
+                id="show-password"
+            >
+            <label
+                class="form-check-label"
+                for="show-password"
+            >
+                Show password
+            </label>
+        </div>
 
-</form>
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
+            Register
+        </button>
+
+    </form>
 
 </div>
+
+<script>
+    const showPassword = document.getElementById("show-password");
+
+    showPassword.addEventListener("change", function () {
+        const password1 = document.getElementById("id_password1");
+        const password2 = document.getElementById("id_password2");
+
+        const inputType = this.checked ? "text" : "password";
+
+        password1.type = inputType;
+        password2.type = inputType;
+    });
+</script>
 
 {% endblock %}

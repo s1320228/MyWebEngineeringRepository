@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from .models import Reservation
+from .models import Reservation, AvailableDate
 
 
 class RegisterForm(UserCreationForm):
@@ -52,12 +52,16 @@ class ReservationForm(forms.ModelForm):
             ),
         }
 
-    def clean_reservation_date(self):
-        reservation_date = self.cleaned_data["reservation_date"]
+    def clean(self) :
+        cleaned_date = super().clean()
+        instructor = cleaned_date.get("instructor")
+        reservation_date = cleaned_date.get("reservation_date")
 
-        if reservation_date < date.today():
-            raise ValidationError(
-                "You cannot make a reservation for a past date."
-            )
-
-        return reservation_date
+        if instructor and reservation_date :
+            if not AvailableDate.objects.filter(
+                instructor = instructor,
+                date = reservation_date
+            ).exists() :
+                raise forms.ValidationError(
+                    "Please select one of the available dates for this instructor."
+                    )
