@@ -187,23 +187,17 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 LOGIN_URL = "/login/"
 
-# メールを実際に送らず、コンソール上に表示
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'gmailアカウント名'
-EMAIL_HOST_PASSWORD = 'gmailパスワード'
-EMAIL_USE_TLS = True
-
-if not DEBUG:
-    SECURE_PROXY_SSL_HEADER = (
-        "HTTP_X_FORWARDED_PROTO",
-        "https",
-    )
-
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-
-    SECURE_HSTS_SECONDS = 3600
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
-    SECURE_HSTS_PRELOAD = False
+if DEBUG :
+    # 開発環境ではコンソールにメール内容を表示
+    # Display mail on console
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else :
+    # 本番環境ではSMTPサーバーを使ってメールを送信
+    # Send mail by using SMTP server
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('DJANGO_EMAIL_HOST')
+    EMAIL_PORT = int(os.environ.get('DJANGO_EMAIL_PORT', 587))
+    EMAIL_HOST_USER = os.environ.get('DJANGO_EMAIL_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('DJANGO_EMAIL_PASSWORD')
+    EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@example.com')

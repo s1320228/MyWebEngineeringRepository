@@ -12,9 +12,12 @@
 
     {{ form.as_p }}
 
-    <button class="btn btn-success">
-        Login
-    </button>
+    <div class="container">
+        <button class="btn btn-success">
+            Login
+        </button>
+        <a href="{% url 'password_reset' %}">Password reset</a>
+    </div>
 
 </form>
 

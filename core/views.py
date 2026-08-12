@@ -36,8 +36,9 @@ def reservation(request):
         if form.is_valid():
             reservation_object = form.save(commit=False)
             reservation_object.user = request.user
-            reservation_object.save()
-            return redirect("my_reservations")
+            if reservation_object is None :
+                reservation_object.save()
+                return redirect("my_reservations")
     else:
         form = ReservationForm(
             initial={
