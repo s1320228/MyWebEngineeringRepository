@@ -13,6 +13,8 @@ The application allows users to:
 - Select an instructor
 - Check available lesson dates dynamically
 - Submit a dance lesson reservation
+- View, edit and cancel their reaervations
+- Reset a forgotten password
 
 The interface uses Bootstrap for responsive design and HTMX for asynchronous content updates.
 
@@ -26,6 +28,8 @@ The interface uses Bootstrap for responsive design and HTMX for asynchronous con
 - Instructor listing with profile images
 - Dance lesson reservation form
 - Database-backed reservation storage
+- Reservation history, editing and cancellation
+- Password reset using Django's authentication views
 - Dynamic available-date display using HTMX
 - Responsive Bootstrap navigation
 - Black-and-gold visual theme
@@ -91,14 +95,26 @@ MyWebEngineeringProject/
 │   │       └── Kenta.png
 │   └── style.css
 ├── templates/
+│   ├── available_dates.html
 │   ├── base.html
+│   ├── cancel_reservation.html
+│   ├── edit_reservation.html
 │   ├── home.html
 │   ├── instructor_list.html
-│   ├── reservation.html
-│   ├── available_dates.html
-│   ├── success.html
+│   ├── instructors.html
 │   ├── login.html
-│   └── register.html
+│   ├── main.html
+│   ├── my_reservations.html
+│   ├── password_reset_complete.html
+│   ├── password_reset_confirm.html
+│   ├── password_reset_done.html
+│   ├── password_reset_email.html
+│   ├── password_reset_form.html
+│   ├── password_reset_subject.txt
+│   ├── register.html
+│   ├── reservation.html
+│   ├── success.html
+│   └── username.html
 ├── AGENTS.md
 ├── manage.py
 ├── pyproject.toml
@@ -166,6 +182,8 @@ The application includes the following business logic:
 - Invalid reservations are returned to the form with validation errors.
 - The selected instructor determines the available dates shown by HTMX.
 - Users can register, log in and log out securely.
+- Users can view, edit and cancel their own reservations.
+- Users can reset a forgotten password through Django's password-reset workflow.
 - Logout requests use the POST method with CSRF protection.
 
 ---
